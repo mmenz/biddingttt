@@ -1,0 +1,157 @@
+body {
+	background-color: #C1DAD6;
+}
+
+div.board-row {
+	width: 350px;
+	height: 110px;
+	clear: both;
+}
+
+div.ttt-container {
+	width: 40%;
+	height: 350px;
+    float: left;
+}
+
+div.human-side {
+	width: 30%;
+	float: left;
+}
+
+div.computer-side {
+	width: 30%;
+	float: left;
+}
+
+div.game-container {
+	width: 80%;
+	margin-left: auto;
+    margin-right: auto;
+    clear: both;
+}
+
+.tl-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-top-left-radius: 10%;
+	border-top-right-radius: 10%;
+	border-bottom-left-radius: 10%;
+}
+
+.tm-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-top-left-radius: 10%;
+	border-top-right-radius: 10%;
+}
+
+.tr-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-top-left-radius: 10%;
+	border-top-right-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+
+.ml-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-top-left-radius: 10%;
+	border-bottom-left-radius: 10%;
+}
+
+.mm-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+}
+
+.mr-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-top-right-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+
+.bl-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-bottom-right-radius: 10%;
+	border-top-left-radius: 10%;
+	border-bottom-left-radius: 10%;
+}
+
+.bm-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-bottom-left-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+
+.br-square {
+	height: 110px;
+	width: 110px;
+	background: #6D929B;
+	float:left;
+	border-bottom-left-radius: 10%;
+	border-top-right-radius: 10%;
+	border-bottom-right-radius: 10%;
+}
+
+.top-border {
+	height: 110px;
+	width: 10px;
+	background: black;
+	float:left;
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+}
+
+.mid-border {
+	height: 110px;
+	width: 10px;
+	background: black;
+	float:left;
+}
+
+.bot-border {
+	height: 110px;
+	width: 10px;
+	background: black;
+	float:left;
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+}
+
+.horizontal-border {
+	height: 10px;
+	width: 350px;
+	background: black;
+	border-radius: 10px
+}
+
+.space1{
+	height: 20px;
+}
+
+.space2{
+	height: 160px;
+}
+
+

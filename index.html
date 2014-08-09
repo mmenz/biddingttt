@@ -5,11 +5,150 @@ index.html
 
 <!DOCTYPE html>
 <head>
-  <title> Bidding Tic-Tac-Toe </title>
-  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<title> Bidding Tic-Tac-Toe </title>
+	<link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="board.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript">
+		function keyPress(event){
+			msg = event.keyCode;
+			if (msg <= 59 && msg >= 48){
+				current = document.getElementById("human-bid-display").innerHTML;
+				if (current.length < 3){
+					document.getElementById("human-bid-display").innerHTML = current + (msg-48);
+				}
+				else{
+					document.getElementById("human-bid-display").innerHTML = msg-48;
+				}
+    		}
+    		else if(msg == 13 && document.getElementById("computer-bid-display").innerHTML == ''){
+    			human_bid = document.getElementById("human-bid-display").innerHTML;
+    			doComputerBid(human_bid);
+    		}
+		}
+
+		function doComputerBid(human_bid){
+			computer_bid = getComputerBid();
+			// animate showing computer bid
+			document.getElementById("computer-bid-display").innerHTML = 0;
+			setInverval(function(){
+				if (document.getElementById("computer-bid-display").innerHTML == computer_bid){
+					clearInterval();
+					submitBids(human_bid, computer_bid);
+				}
+				else{
+					document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) + 1;
+				}
+			}, 20);
+		}
+
+		function submitBids(human_bid, computer_bid){
+			if (human_bid > computer_bid){
+				document.getElementById('turn').innerHTML = 'x';
+				document.getElementById("human-bid-display").innerHTML = '';
+				document.getElementById("computer-bid-display").innerHTML = '';
+			}
+			else{
+				document.getElementById("human-bid-display").innerHTML = '';
+				document.getElementById("computer-bid-display").innerHTML = '';
+			}
+		}
+
+		function getComputerBid(){
+			return 50;
+		}
+
+		function squareClick(square){
+			x = '<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Red_X_Freehand.svg/120px-Red_X_Freehand.svg.png" />';
+			o = '<img src="http://www.clker.com/cliparts/W/T/V/W/d/u/uppercase-o-md.png" />';
+			if(document.getElementById(square).innerHTML == x || document.getElementById(square).innerHTML == o){
+				// do nothing
+			}
+			else{
+				if(document.getElementById('turn').innerHTML == 'x'){
+					document.getElementById(square).innerHTML = x;
+					document.getElementById('turn').innerHTML = 'n';
+				}
+				else if(document.getElementById('turn').innerHTML == 'o'){
+					document.getElementById(square).innerHTML = o;
+					document.getElementById('turn').innerHTML = 'n';
+				}
+			}
+		}
+	</script>
 </head>
 
-<body>
-  <h1>Bidding Tic-Tac-Toe</h1>
-  <script src="js/bootstrap.min.js"></script>
+<body onkeypress="keyPress(event)">
+ 	<div class="hero-unit">
+	    	<h1>
+	       		Bidding Tic-Tac-Toe
+	    	</h1>
+	    	<p>
+	    		A new spin on a classic game.
+	    	</p>
+	</div>
+
+	<!-- Hidden Values -->
+	<p id="turn" hidden>n</p>
+
+	<!-- Square Values -->
+		<p id="tl" hidden>n</p>
+		<p id="tm" hidden>n</p>
+		<p id="tr" hidden>n</p>
+		<p id="ml" hidden>n</p>
+		<p id="mm" hidden>n</p>
+		<p id="mr" hidden>n</p>
+		<p id="bl" hidden>n</p>
+		<p id="bm" hidden>n</p>
+		<p id="br" hidden>n</p>
+	<!-- End Hidden Values -->
+
+	<div class="space1"></div>
+
+	<div class="game-container">
+
+		<div class="human-side">
+			<div class="space2"></div>
+			<center>
+				<p id="human-bid-display" style="font-size:100px"></p>
+			</center>
+		</div>
+
+		<div class="ttt-container">
+			<center>
+				<div class="board-row">
+					<div class="tl-square" id="tl-square" onclick="squareClick('tl-square')"></div>
+					<div class="top-border"></div>
+					<div class="tm-square" id="tm-square" onclick="squareClick('tm-square')"></div>
+					<div class="top-border"></div>
+					<div class="tr-square" id="tr-square" onclick="squareClick('tr-square')"></div>
+				</div>
+				<div class="horizontal-border"></div>
+				<div class="board-row">
+					<div class="ml-square" id="ml-square" onclick="squareClick('ml-square')"></div>
+					<div class="mid-border"></div>
+					<div class="mm-square" id="mm-square" onclick="squareClick('mm-square')"></div>
+					<div class="mid-border"></div>
+					<div class="mr-square" id="mr-square" onclick="squareClick('mr-square')"></div>
+				</div>
+				<div class="horizontal-border"></div>
+				<div class="board-row">
+					<div class="bl-square" id="bl-square" onclick="squareClick('bl-square')"></div>
+					<div class="bot-border"></div>
+					<div class="bm-square" id="bm-square" onclick="squareClick('bm-square')"></div>
+					<div class="bot-border"></div>
+					<div class="br-square" id="br-square" onclick="squareClick('br-square')"></div>
+				</div>
+			</center>
+		</div>
+
+		<div class="computer-side">
+			<div class="space2"></div>
+			<center>
+				<p id="computer-bid-display" style="font-size:100px"></p>
+			</center>
+		</div>
+
+	</div>
+
+	<script src="js/bootstrap.min.js"></script>
 </body>

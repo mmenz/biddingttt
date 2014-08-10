@@ -11,7 +11,7 @@ index.html
 	<script type="text/javascript">
 		function keyPress(event){
 			msg = event.keyCode;
-			if (msg <= 59 && msg >= 48){
+			if (msg <= 59 && msg >= 48 && document.getElementById('turn').innerHTML == 'n'){
 				current = document.getElementById("human-bid-display").innerHTML;
 				if (current.length < 3){
 					document.getElementById("human-bid-display").innerHTML = current + (msg-48);
@@ -30,31 +30,75 @@ index.html
 			computer_bid = getComputerBid();
 			// animate showing computer bid
 			document.getElementById("computer-bid-display").innerHTML = 0;
-			setInverval(function(){
+			var upcount = setInterval(function(){ 
 				if (document.getElementById("computer-bid-display").innerHTML == computer_bid){
-					clearInterval();
-					submitBids(human_bid, computer_bid);
+					clearInterval(upcount);
+					setTimeout(function(){submitBids(human_bid, computer_bid)}, 300);
 				}
-				else{
+				else if(document.getElementById("computer-bid-display").innerHTML != ''){
 					document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) + 1;
 				}
-			}, 20);
+			}, 30);
 		}
+
+
 
 		function submitBids(human_bid, computer_bid){
 			if (human_bid > computer_bid){
-				document.getElementById('turn').innerHTML = 'x';
-				document.getElementById("human-bid-display").innerHTML = '';
-				document.getElementById("computer-bid-display").innerHTML = '';
+				var upcount = setInterval(function(){ 
+					if (document.getElementById("human-bid-display").innerHTML == 0){
+						clearInterval(upcount);
+						document.getElementById("human-bid-display").innerHTML = '';
+						document.getElementById("computer-bid-display").innerHTML = '';
+						document.getElementById('turn').innerHTML = 'x'; // human can move after bids have been added and subtracted
+					}
+					else{
+						if(document.getElementById("computer-bid-display").innerHTML != 0){
+							document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) + 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) - 1;
+						}
+						else{
+							document.getElementById("human-bid-display").innerHTML = parseInt(document.getElementById("human-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) - 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) + 1;
+						}
+					}
+				}, 20);
 			}
 			else{
-				document.getElementById("human-bid-display").innerHTML = '';
-				document.getElementById("computer-bid-display").innerHTML = '';
+				var upcount = setInterval(function(){ 
+					if (document.getElementById("computer-bid-display").innerHTML == 0){
+						clearInterval(upcount);
+						document.getElementById("human-bid-display").innerHTML = '';
+						document.getElementById("computer-bid-display").innerHTML = '';
+						setTimeout(function(){makeComputerMove()}, 50); // computer moves after bids have been added and subtracted
+					}
+					else{
+						if(document.getElementById("human-bid-display").innerHTML == 0){
+							document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) + 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) - 1;
+						}
+						else{
+							document.getElementById("human-bid-display").innerHTML = parseInt(document.getElementById("human-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) - 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) + 1;
+						}
+					}
+				}, 20);
 			}
 		}
 
+
 		function getComputerBid(){
-			return 50;
+			return Math.floor(Math.random() * 100);
+		}
+
+		function makeComputerMove(){
+			o = '<img src="http://www.clker.com/cliparts/W/T/V/W/d/u/uppercase-o-md.png" />';
+			var squares = ['tl-square','tm-square','tr-square','ml-square','mm-square','mr-square','bl-square','bm-square','br-square'];
+			return Math.floor(Math.random() * 9);
 		}
 
 		function squareClick(square){
@@ -67,6 +111,9 @@ index.html
 				if(document.getElementById('turn').innerHTML == 'x'){
 					document.getElementById(square).innerHTML = x;
 					document.getElementById('turn').innerHTML = 'n';
+					// reset bids
+					document.getElementById("human-bid-display").innerHTML = '';
+					document.getElementById("computer-bid-display").innerHTML = '';
 				}
 				else if(document.getElementById('turn').innerHTML == 'o'){
 					document.getElementById(square).innerHTML = o;
@@ -107,9 +154,10 @@ index.html
 	<div class="game-container">
 
 		<div class="human-side">
-			<div class="space2"></div>
 			<center>
-				<p id="human-bid-display" style="font-size:100px"></p>
+				<p id="human-total-display" style="font-size:60px; color:#003366">100</p>
+				<div class="space2"></div>
+				<p id="human-bid-display" style="font-size:100px; color:#003366"></p>
 			</center>
 		</div>
 
@@ -142,9 +190,10 @@ index.html
 		</div>
 
 		<div class="computer-side">
-			<div class="space2"></div>
 			<center>
-				<p id="computer-bid-display" style="font-size:100px"></p>
+				<p id="computer-total-display" style="font-size:60px; color:crimson">100</p>
+				<div class="space2"></div>
+				<p id="computer-bid-display" style="font-size:100px; color:crimson"></p>
 			</center>
 		</div>
 

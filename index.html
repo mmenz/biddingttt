@@ -1,0 +1,287 @@
+<!--
+Copyright 2014 Michael Menz
+index.html
+-->
+
+<!DOCTYPE html>
+<head>
+	<title> Bidding Tic-Tac-Toe </title>
+	<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
+	<link href="/css/style.css" rel="stylesheet" type="text/css">
+	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript">
+
+		var x = '<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Red_X_Freehand.svg/120px-Red_X_Freehand.svg.png">';
+		var o = '<img src="http://www.clker.com/cliparts/W/T/V/W/d/u/uppercase-o-md.png">';
+
+		function keyPress(event){
+			msg = event.keyCode;
+			if (msg <= 59 && msg >= 48 && document.getElementById('turn').innerHTML == 'n'){
+				current = document.getElementById("human-bid-display").innerHTML;
+				if (current.length < 3){
+					document.getElementById("human-bid-display").innerHTML = current + (msg-48);
+				}
+				else{
+					document.getElementById("human-bid-display").innerHTML = msg-48;
+				}
+    		}
+    		else if(msg == 13 && document.getElementById("computer-bid-display").innerHTML == ''){
+    			human_bid = document.getElementById("human-bid-display").innerHTML;
+    			doComputerBid(human_bid);
+    		}
+		}
+
+		function doComputerBid(human_bid){
+			if (human_bid > parseInt(document.getElementById("human-total-display").innerHTML)){
+				alert("bid too high!");
+			}
+			else{
+				$.post("/computeBid", 
+					{	
+						'p2': 	document.getElementById("human-total-display").innerHTML,
+						'p1': 	document.getElementById("computer-total-display").innerHTML, // computer is player 1
+						'pos':  getPosition()
+					},
+						function(data){
+							computer_bid = parseInt(data);
+							makeBids(human_bid, computer_bid);
+				});	
+			}
+		}
+
+		function getPosition(){
+			var pos = getSquareValue('tl') + getSquareValue('tm') + getSquareValue('tr') + getSquareValue('ml') + getSquareValue('mm') + getSquareValue('mr')+ getSquareValue('bl') + getSquareValue('bm') + getSquareValue('br');
+			return pos;
+		}
+
+		function getSquareValue(square){
+			if (document.getElementById(square+'-square').innerHTML == x){
+				return 'x';
+			}
+			if (document.getElementById(square+'-square').innerHTML == o){
+				return 'o';
+			}
+			return 'n';
+		}
+
+		function makeBids(human_bid, computer_bid){
+			// animate showing computer bid
+			document.getElementById("computer-bid-display").innerHTML = "0";
+			var upcount = setInterval(function(){ 
+				if (document.getElementById("computer-bid-display").innerHTML == computer_bid){
+					clearInterval(upcount);
+					setTimeout(function(){submitBids(human_bid, computer_bid)}, 300);
+				}
+				else if(document.getElementById("computer-bid-display").innerHTML != ''){
+					document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) + 1;
+				}
+			}, 30);
+		}
+
+		function submitBids(human_bid, computer_bid){
+			if (human_bid > computer_bid){
+				var upcount = setInterval(function(){ 
+					if (document.getElementById("human-bid-display").innerHTML == 0){
+						clearInterval(upcount);
+						document.getElementById("human-bid-display").innerHTML = '';
+						document.getElementById("computer-bid-display").innerHTML = '';
+						document.getElementById('turn').innerHTML = 'x'; // human can move after bids have been added and subtracted
+					}
+					else{
+						if(document.getElementById("computer-bid-display").innerHTML != 0){
+							document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) + 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) - 1;
+						}
+						else{
+							document.getElementById("human-bid-display").innerHTML = parseInt(document.getElementById("human-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) - 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) + 1;
+						}
+					}
+				}, 20);
+			}
+			else{
+				var upcount = setInterval(function(){ 
+					if (document.getElementById("computer-bid-display").innerHTML == 0){
+						clearInterval(upcount);
+						document.getElementById("human-bid-display").innerHTML = '';
+						document.getElementById("computer-bid-display").innerHTML = '';
+						setTimeout(function(){makeComputerMove()}, 50); // computer moves after bids have been added and subtracted
+					}
+					else{
+						if(document.getElementById("human-bid-display").innerHTML == 0){
+							document.getElementById("computer-bid-display").innerHTML = parseInt(document.getElementById("computer-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) + 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) - 1;
+						}
+						else{
+							document.getElementById("human-bid-display").innerHTML = parseInt(document.getElementById("human-bid-display").innerHTML) - 1;
+							document.getElementById("human-total-display").innerHTML = parseInt(document.getElementById("human-total-display").innerHTML) - 1;
+							document.getElementById("computer-total-display").innerHTML = parseInt(document.getElementById("computer-total-display").innerHTML) + 1;
+						}
+					}
+				}, 20);
+			}
+		}
+
+
+		function playerWonQ(){
+			var squares = ['tl-square','tm-square','tr-square','ml-square','mm-square','mr-square','bl-square','bm-square','br-square'];
+			var marks = new Array(9);
+			//var marks = [(document.getElementById(sq) == x) for each (sq in squares)];
+			for (var i = 0; i < 9; i++) {
+				marks[i] = (document.getElementById(squares[i]).innerHTML == x);
+			}
+			if( (marks[0] && marks[1] && marks[2]) || (marks[3] && marks[4] && marks[5]) || (marks[6] && marks[7] && marks[8]) 
+					|| (marks[0] && marks[3] && marks[6]) || (marks[1] && marks[4] && marks[7]) || (marks[2] && marks[5] && marks[8]) 
+					|| (marks[0] && marks[4] && marks[8]) || (marks[2] && marks[4] && marks[6]) ){
+				// if player wins...
+				document.getElementById('turn').innerHTML = 'over';
+				gameOverMessage("You Won<br>Tic-Tac-Toe!");
+			}
+			// do nothing otherwise
+		}
+
+		function computerWonQ(){
+			var squares = ['tl-square','tm-square','tr-square','ml-square','mm-square','mr-square','bl-square','bm-square','br-square'];
+			var marks = new Array(9);
+			//var marks = [(document.getElementById(sq) == x) for each (sq in squares)];
+			for (var i = 0; i < 9; i++) {
+				marks[i] = (document.getElementById(squares[i]).innerHTML == o);
+			}
+			if( (marks[0] && marks[1] && marks[2]) || (marks[3] && marks[4] && marks[5]) || (marks[6] && marks[7] && marks[8]) 
+					|| (marks[0] && marks[3] && marks[6]) || (marks[1] && marks[4] && marks[7]) || (marks[2] && marks[5] && marks[8]) 
+					|| (marks[0] && marks[4] && marks[8]) || (marks[2] && marks[4] && marks[6]) ){
+				// if player wins...
+				document.getElementById('turn').innerHTML = 'over';
+				gameOverMessage("You Lost<br>Tic-Tac-Toe!");
+			}
+			// do nothing otherwise
+		}
+
+		function Reset(){
+			location.reload()
+		}
+
+		function gameOverMessage(message){
+			document.getElementById("game-over-message").style.zIndex = 10;
+			document.getElementById("game-over-message").innerHTML = "<center><p class='end-message'>" + message + "</p> <button class='btn btn-lg btn-primary' type='button' onclick='Reset()''>Play Again</button></center>";
+			$("#game-over-message").animate({opacity:1.0}, 2000, function(){});
+		}
+
+		function makeComputerMove(){
+			$.post("/computeMove", 
+				{	
+					'p2': 	document.getElementById("human-total-display").innerHTML,
+					'p1': 	document.getElementById("computer-total-display").innerHTML, // computer is player 1
+					'pos':  getPosition()
+				},
+					function(data){
+						var squares = ['tl-square','tm-square','tr-square','ml-square','mm-square','mr-square','bl-square','bm-square','br-square'];
+						computer_move = parseInt(data);
+						document.getElementById(squares[computer_move]).innerHTML = o;
+						setTimeout(function(){computerWonQ()}, 10); // check if computer won and act if so
+			});
+		}
+
+		function squareClick(square){
+			if(document.getElementById(square).innerHTML == ''){
+				if(document.getElementById('turn').innerHTML == 'x'){
+					document.getElementById(square).innerHTML = x;
+					document.getElementById('turn').innerHTML = 'n';
+					// reset bids
+					document.getElementById("human-bid-display").innerHTML = '';
+					document.getElementById("computer-bid-display").innerHTML = '';
+					setTimeout(function(){playerWonQ()}, 10); // check if player won and act if so
+				}
+				else if(document.getElementById('turn').innerHTML == 'o'){
+					document.getElementById(square).innerHTML = o;
+					document.getElementById('turn').innerHTML = 'n';
+				}
+			}
+		}
+
+	</script>
+</head>
+
+<body onkeypress="keyPress(event)">
+ 	<div class="hero-unit">
+	    	<h1>
+	       		Bidding Tic-Tac-Toe
+	    	</h1>
+	    	<p>
+	    		A new spin on a classic game.
+	    	</p>
+	</div>
+
+	<!-- Hidden Values -->
+	<p id="turn" hidden>n</p>
+
+	<!-- Square Values -->
+		<p id="tl" hidden>n</p>
+		<p id="tm" hidden>n</p>
+		<p id="tr" hidden>n</p>
+		<p id="ml" hidden>n</p>
+		<p id="mm" hidden>n</p>
+		<p id="mr" hidden>n</p>
+		<p id="bl" hidden>n</p>
+		<p id="bm" hidden>n</p>
+		<p id="br" hidden>n</p>
+	<!-- End Hidden Values -->
+
+	<div class="space1"></div>
+
+	<div class="game-container">
+
+		<div class="human-side">
+			<center>
+				<p id="human-total-display" style="font-size:60px; color:#003366">100</p>
+				<div class="space2"></div>
+				<p id="human-bid-display" style="font-size:100px; color:#003366"></p>
+			</center>
+		</div>
+
+		<div class="game-container-inner">
+			<div class="game-over-message" id="game-over-message"> </div>
+			<div class="ttt-container">
+				<center>
+					<div class="board-row">
+						<div class="tl-square" id="tl-square" onclick="squareClick('tl-square')"></div>
+						<div class="top-border"></div>
+						<div class="tm-square" id="tm-square" onclick="squareClick('tm-square')"></div>
+						<div class="top-border"></div>
+						<div class="tr-square" id="tr-square" onclick="squareClick('tr-square')"></div>
+					</div>
+					<div class="horizontal-border"></div>
+					<div class="board-row">
+						<div class="ml-square" id="ml-square" onclick="squareClick('ml-square')"></div>
+						<div class="mid-border"></div>
+						<div class="mm-square" id="mm-square" onclick="squareClick('mm-square')"></div>
+						<div class="mid-border"></div>
+						<div class="mr-square" id="mr-square" onclick="squareClick('mr-square')"></div>
+					</div>
+					<div class="horizontal-border"></div>
+					<div class="board-row">
+						<div class="bl-square" id="bl-square" onclick="squareClick('bl-square')"></div>
+						<div class="bot-border"></div>
+						<div class="bm-square" id="bm-square" onclick="squareClick('bm-square')"></div>
+						<div class="bot-border"></div>
+						<div class="br-square" id="br-square" onclick="squareClick('br-square')"></div>
+					</div>
+				</center>
+			</div>
+		</div>
+
+		<div class="computer-side">
+			<center>
+				<p id="computer-total-display" style="font-size:60px; color:crimson">100</p>
+				<div class="space2"></div>
+				<p id="computer-bid-display" style="font-size:100px; color:crimson"></p>
+			</center>
+		</div>
+
+	</div>
+
+<!-- 	<script src="/js/bootstrap.min.js"></script> -->
+</body>

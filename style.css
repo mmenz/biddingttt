@@ -32,7 +32,7 @@ div.game-container {
 }
 
 div.game-over-message {
-	width: 400px;
+	width: 350px;
 	height: 400px;
 	background: red;
 	z-index: 1000;

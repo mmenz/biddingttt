@@ -41,7 +41,7 @@ div.game-container {
 }
 
 div.game-container-inner {
-	width: 40.2%;
+	width: 350px;
 	float: left;
 	position: relative;
 }
@@ -178,5 +178,4 @@ div.game-over-message{
 .space2{
 	height: 140px;
 }
-
 

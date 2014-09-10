@@ -48,11 +48,11 @@ class computerMover(object):
 		if p2 == 0:
 			response = randint(0,8)
 			while pos[response] != 'n':
-				response = randint(0,8)
+				response = random.randint(0,8)
 		elif ttt.tieGameQ(pos): 
-			response = randint(0,8)
+			response = random.randint(0,8)
 			while pos[response] != 'n':
-				response = randint(0,8)
+				response = random.randint(0,8)
 		elif ttt.winningSquareQ(pos) >= 0:
 			response = ttt.winningSquareQ(pos)
 		else:

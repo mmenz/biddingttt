@@ -1,1 +1,1 @@
-web: python biddingttt.py
+web: python app.py

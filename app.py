@@ -83,4 +83,6 @@ if __name__ == '__main__':
 	webapp = index()
 	webapp.computeBid = computerBidder()
 	webapp.computeMove = computerMover()
+	cherrypy.config.update({'server.socket_host': '0.0.0.0',})
+	cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5000')),})
 	cherrypy.quickstart(webapp,'/',conf)

@@ -12,7 +12,7 @@ index.html
 	<script type="text/javascript">
 
 		var x = '<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Red_X_Freehand.svg/120px-Red_X_Freehand.svg.png">';
-		var o = '<img src="http://www.clker.com/cliparts/W/T/V/W/d/u/uppercase-o-md.png">';
+		var o = '<img src="http://www.netdenizen.org/wsgi/hhscp/static/exemplars/tictactoe/O.png">';
 
 		function keyPress(event){
 			msg = event.keyCode;
@@ -79,7 +79,9 @@ index.html
 		}
 
 		function submitBids(human_bid, computer_bid){
-			if (human_bid > computer_bid){
+			human_total = parseInt(document.getElementById("human-total-display").innerHTML);
+			computer_total = parseInt(document.getElementById("computer-total-display").innerHTML);
+			if (human_bid > computer_bid || (human_bid == computer_bid && human_total >= computer_total)){
 				var upcount = setInterval(function(){ 
 					if (document.getElementById("human-bid-display").innerHTML == 0){
 						clearInterval(upcount);
@@ -140,7 +142,16 @@ index.html
 				document.getElementById('turn').innerHTML = 'over';
 				gameOverMessage("You Won<br>Tic-Tac-Toe!");
 			}
-			// do nothing otherwise
+			var ties = 0;
+			for (var i = 0; i < 9; i++) {
+				if (document.getElementById(squares[i]).innerHTML == ''){
+					ties += 1;
+				}
+			}
+			if (ties == 9){
+				document.getElementById('turn').innerHTML = 'over';
+				gameOverMessage("You Tied<br>Tic-Tac-Toe!");
+			}
 		}
 
 		function computerWonQ(){
@@ -157,7 +168,16 @@ index.html
 				document.getElementById('turn').innerHTML = 'over';
 				gameOverMessage("You Lost<br>Tic-Tac-Toe!");
 			}
-			// do nothing otherwise
+			var ties = 0;
+			for (var i = 0; i < 9; i++) {
+				if (document.getElementById(squares[i]).innerHTML == ''){
+					ties += 1;
+				}
+			}
+			if (ties == 9){
+				document.getElementById('turn').innerHTML = 'over';
+				gameOverMessage("You Tied<br>Tic-Tac-Toe!");
+			}
 		}
 
 		function Reset(){
@@ -211,7 +231,7 @@ index.html
 	       		Bidding Tic-Tac-Toe
 	    	</h1>
 	    	<p>
-	    		A new spin on a classic game.
+	    		A new spin on a classic game. 
 	    	</p>
 	</div>
 
@@ -273,6 +293,7 @@ index.html
 			</div>
 		</div>
 
+
 		<div class="computer-side">
 			<center>
 				<p id="computer-total-display" style="font-size:60px; color:crimson">100</p>
@@ -280,7 +301,6 @@ index.html
 				<p id="computer-bid-display" style="font-size:100px; color:crimson"></p>
 			</center>
 		</div>
-
 	</div>
 
 <!-- 	<script src="/js/bootstrap.min.js"></script> -->

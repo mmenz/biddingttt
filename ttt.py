@@ -1,3 +1,60 @@
+
+startStrategy = [	
+					0.0202249, 0.0201317, 0.0200378, 0.0199485, 0.0198641, 0.0197838,
+					0.0197072, 0.0196346, 0.0195659, 0.019501, 0.0194391, 0.0193796,
+					0.0193228, 0.019269, 0.0192189, 0.0191733, 0.0191312, 0.019092,
+					0.0190567, 0.0190265, 0.0190019, 0.0189824, 0.0189672, 0.0189565,
+					0.0189507, 0.01895, 0.0189544, 0.0189646, 0.0189795, 0.0190004,
+					0.0190268, 0.0190586, 0.0190943, 0.0191331, 0.0191762, 0.0192237, 
+					0.0192755, 0.0193307, 0.0193887, 0.0194489, 0.0195126, 0.0195799,
+					0.0196509, 0.019726, 0.0198045, 0.0198867, 0.0199737, 0.0200657,
+					0.0201612, 0.0202488, 0.0201593, 0.00885816
+				]
+
+def getStrategy(pos, p1, p2):
+	num = posToNumber(pos)
+	if num == 0:
+		return startStrategy
+	reducednum = reduceNum(num)
+	pos_file = open('Database/'+str(reducednum)+'.csv','r').read().split('\n')
+	line = pos_file[p1-1].split(',')
+	strat = []
+	for i in range(1, len(line)):
+		strat.append(float(line[i]))
+	return strat
+
+def getMove(pos, p1, p2):
+	positions = []
+	for i in range(0,9):
+		if pos[i] != 'n':
+			positions.append(-1)
+			continue
+		next_pos = pos[:]
+		next_pos[i] = 'o'
+		num = posToNumber(next_pos)
+		reducednum = reduceNum(num)
+		pos_file = open('Database/'+str(reducednum)+'.csv','r').read().split('\n')
+		line = pos_file[p1].split(',')
+		positions.append(float(line[0]))
+	return positions.index(max(positions))
+
+def reduceNum(num):
+	return int(open('Database/vertices.csv','r').read().split('\n')[num])
+
+def posToNumber(pos):
+	conv = {'n':0,'o':1,'x':2}
+	s = 0
+	for i in range(0,9):
+		s += conv[pos[8-i]]*3**i
+	return s
+
+def squaresRemainingQ(pos):
+	num = 0
+	for s in pos:
+		if s == 'n':
+			num += 1
+	return num
+
 def WinnerQ(pos):
 	if (pos[0]=='x' and pos[1] == 'x' and pos[2] == 'x') or (pos[3]=='x' and pos[4] == 'x' and pos[5] == 'x') or (pos[6]=='x' and pos[7] == 'x' and pos[8] == 'x') or (pos[0]=='x' and pos[3] == 'x' and pos[6] == 'x') or (pos[1]=='x' and pos[4] == 'x' and pos[7] == 'x') or (pos[2]=='x' and pos[5] == 'x' and pos[8] == 'x') or (pos[0]=='x' and pos[4] == 'x' and pos[8] == 'x') or (pos[2]=='x' and pos[4] == 'x' and pos[6] == 'x'):
 		return 'x'
@@ -20,7 +77,7 @@ def evenGameQ(pos):
 			pos_copy = pos[:]
 			pos_copy[i] = 'o'
 			if WinnerQ(pos_copy) == 'o':
-				check = 2
+				check += 1
 				break
 	if check == 2:
 		return True

@@ -12,6 +12,16 @@ p.end-message {
 	line-height: 45px;
 }
 
+p.rulesp {
+  margin-right: auto;
+	margin-left: auto;
+  width: 60%;
+	font-size: 20px;
+  margin-top: 20px;
+  line-height: 22px;
+  font-family: "Arial";
+}
+
 div.board-row {
 	width: 350px;
 	height: 110px;

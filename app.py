@@ -8,6 +8,10 @@ class index(object):
 	def index(self):
 	    return open("index.html").read()
 
+	@cherrypy.expose
+	def rules(self):
+		return open("rules.html").read()
+
 class computerBidder(object):
 	exposed = True
 
@@ -21,12 +25,12 @@ class computerBidder(object):
 		pos = list(args['pos'])
 		if p2 == 0:
 			response = 0
-		elif ttt.squaresRemainingQ(pos) == 1: 	# last square = bet it all
-			response = p1
-		elif ttt.evenGameQ(pos): 				# next move wins = bet it all
-			response = p1
-		elif ttt.tieGameQ(pos): 				# game will end tie = random bids
-			response = random.randint(0, p1)
+		# elif ttt.squaresRemainingQ(pos) == 1: 	# last square = bet it all
+		# 	response = p1
+		# elif ttt.evenGameQ(pos): 				# next move wins = bet it all
+		# 	response = p1
+		# elif ttt.tieGameQ(pos): 				# game will end tie = random bids
+		# 	response = random.randint(0, p1)
 		else:									# OTHER CASES = TO DO
 			strat = ttt.getStrategy(pos, p1, p2)
 			r = random.random()
@@ -46,7 +50,7 @@ class computerMover(object):
 		p2 = int(args['p2'])
 		pos = list(args['pos'])
 		if p2 == 0:
-			response = randint(0,8)
+			response = random.randint(0,8)
 			while pos[response] != 'n':
 				response = random.randint(0,8)
 		elif ttt.tieGameQ(pos): 

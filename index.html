@@ -148,7 +148,7 @@ index.html
 					ties += 1;
 				}
 			}
-			if (ties == 9){
+			if (ties == 0){
 				document.getElementById('turn').innerHTML = 'over';
 				gameOverMessage("You Tied<br>Tic-Tac-Toe!");
 			}
@@ -174,7 +174,7 @@ index.html
 					ties += 1;
 				}
 			}
-			if (ties == 9){
+			if (ties == 0){
 				document.getElementById('turn').innerHTML = 'over';
 				gameOverMessage("You Tied<br>Tic-Tac-Toe!");
 			}
@@ -226,6 +226,7 @@ index.html
 </head>
 
 <body onkeypress="keyPress(event)">
+	<div class="wrapper">
  	<div class="hero-unit">
 	    	<h1>
 	       		Bidding Tic-Tac-Toe
@@ -302,6 +303,11 @@ index.html
 			</center>
 		</div>
 	</div>
+	<div class="push"></div>
+	</div>
 
+	<footer class="credit">
+		
+	</footer>
 <!-- 	<script src="/js/bootstrap.min.js"></script> -->
 </body>

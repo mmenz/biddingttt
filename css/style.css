@@ -16,9 +16,9 @@ p.rulesp {
   margin-right: auto;
 	margin-left: auto;
   width: 60%;
-	font-size: 20px;
+	font-size: 16px;
   margin-top: 20px;
-  line-height: 22px;
+  line-height: 18px;
   font-family: "Arial";
 }
 
@@ -189,3 +189,21 @@ div.game-over-message{
 	height: 140px;
 }
 
+html, body {
+	height: 100%;
+}
+.wrapper {
+	min-height: 100%;
+	height: auto !important;
+	height: 100%;
+	margin: 0 auto -2em;
+}
+
+.footer, .push {
+	height: 2em;
+}
+
+.credit {
+	margin-left: 20px;
+	font-size: 9px;
+}

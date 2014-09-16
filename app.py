@@ -25,12 +25,12 @@ class computerBidder(object):
 		pos = list(args['pos'])
 		if p2 == 0:
 			response = 0
-		# elif ttt.squaresRemainingQ(pos) == 1: 	# last square = bet it all
-		# 	response = p1
-		# elif ttt.evenGameQ(pos): 				# next move wins = bet it all
-		# 	response = p1
-		# elif ttt.tieGameQ(pos): 				# game will end tie = random bids
-		# 	response = random.randint(0, p1)
+		elif ttt.squaresRemainingQ(pos) == 1: 	# last square = bet it all
+			response = p1
+		elif ttt.evenGameQ(pos): 				# next move wins = bet it all
+			response = p1
+		elif ttt.tieGameQ(pos): 				# game will end tie = random bids
+			response = random.randint(0, p1)
 		else:									# OTHER CASES = TO DO
 			strat = ttt.getStrategy(pos, p1, p2)
 			r = random.random()

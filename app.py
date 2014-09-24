@@ -26,9 +26,9 @@ class computerBidder(object):
 		if p2 == 0:
 			response = 0
 		elif ttt.squaresRemainingQ(pos) == 1: 	# last square = bet it all
-			response = p1
+			response = min(p1,p2)
 		elif ttt.evenGameQ(pos): 				# next move wins = bet it all
-			response = p1
+			response = min(p1,p2)
 		elif ttt.tieGameQ(pos): 				# game will end tie = random bids
 			response = random.randint(0, p1)
 		else:									# OTHER CASES = TO DO
@@ -49,6 +49,7 @@ class computerMover(object):
 		p1 = int(args['p1'])
 		p2 = int(args['p2'])
 		pos = list(args['pos'])
+		print(p1, p2, pos)
 		if p2 == 0:
 			response = random.randint(0,8)
 			while pos[response] != 'n':
@@ -58,6 +59,7 @@ class computerMover(object):
 			while pos[response] != 'n':
 				response = random.randint(0,8)
 		elif ttt.winningSquareQ(pos) >= 0:
+			print("WINNING SQUARE FOUND!!")
 			response = ttt.winningSquareQ(pos)
 		else:
 			response = ttt.getMove(pos,p1,p2)

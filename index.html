@@ -172,6 +172,7 @@ index.html
 				// if player wins...
 				document.getElementById('turn').innerHTML = 'over';
 				return gameOverMessage("You Lost<br>Tic-Tac-Toe!");
+				window.open("count")
 			}
 			var ties = 0;
 			for (var i = 0; i < 9; i++) {
@@ -227,6 +228,16 @@ index.html
 			}
 		}
 
+		function getPlays(){
+			var client = new XMLHttpRequest();
+			client.open('GET', '/count');
+			client.onreadystatechange = function() {
+  				document.getElementById("intro").innerHTML = "A new spin on a classic game. Read the <a href=\"rules\">rules</a>. Thank you for being our "+ client.responseText +" visitor!";
+			}
+			client.send();
+		}
+
+		window.onload = getPlays;
 	</script>
 </head>
 
@@ -236,9 +247,9 @@ index.html
 	    	<h1>
 	       		Bidding Tic-Tac-Toe
 	    	</h1>
-	    	<p>
-	    		A new spin on a classic game. Read the <a href="rules"> rules<a>.
-	    	</p>
+	    	<p id="intro">
+	    		A new spin on a classic game. Read the <a href="rules">rules</a>. Thank you for being our 0-th player!
+	  		</p>
 	</div>
 
 	<!-- Hidden Values -->

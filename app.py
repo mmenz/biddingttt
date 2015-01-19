@@ -6,16 +6,25 @@ import ttt
 class index(object):
 	@cherrypy.expose
 	def index(self):
-		try:
-			count = int(open('count','r').read()) + 1
-		except:
-			count = 1
-		open('count', 'w').write(str(count))
-	    return open("index.html").read()
+		return open("index.html").read()
 
 	@cherrypy.expose
 	def rules(self):
 		return open("rules.html").read()
+
+	@cherrypy.expose
+	def count(self):
+		count = int(open("count").read())+1
+		open("count","w").write(str(count))
+		if count%10 == 1:
+			return str(count)+'st'
+		elif count%10 == 2:
+			return str(count)+'nd'
+		elif count%10 == 3:
+			return str(count)+'rd'
+		else:
+			return str(count)+'th'
+		
 
 class computerBidder(object):
 	exposed = True

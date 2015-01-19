@@ -6,6 +6,11 @@ import ttt
 class index(object):
 	@cherrypy.expose
 	def index(self):
+		try:
+			count = int(open('count','r').read()) + 1
+		except:
+			count = 1
+		open('count', 'w').write(str(count))
 	    return open("index.html").read()
 
 	@cherrypy.expose
@@ -92,3 +97,4 @@ if __name__ == '__main__':
 	cherrypy.config.update({'server.socket_host': '0.0.0.0',})
 	cherrypy.config.update({'server.socket_port': int(os.environ.get('PORT', '5000')),})
 	cherrypy.quickstart(webapp,'/',conf)
+##

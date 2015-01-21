@@ -8,7 +8,8 @@ index.html
 	<title> Bidding Tic-Tac-Toe </title>
 	<link href="/css/bootstrap.min.css" rel="stylesheet" media="screen">
 	<link href="/css/style.css" rel="stylesheet" type="text/css">
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+	<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+	<script type="text/javascript" src="/js/smoothscroll.js"></script>
 	<script type="text/javascript">
 
 		var x = '<img src="http://upload.wikimedia.org/wikipedia/commons/thumb/8/8b/Red_X_Freehand.svg/120px-Red_X_Freehand.svg.png">';
@@ -232,7 +233,7 @@ index.html
 			var client = new XMLHttpRequest();
 			client.open('GET', '/count');
 			client.onreadystatechange = function() {
-  				document.getElementById("intro").innerHTML = "A new spin on a classic game. Read the <a href=\"rules\">rules</a>. Thank you for being our "+ client.responseText +" visitor!";
+  				document.getElementById("intro").innerHTML = "A new spin on a classic game. Read the <a href=\"#codeword\" class=\"smoothScroll\">rules</a>. Thank you for being our "+ client.responseText +" visitor!";
 			}
 			client.send();
 		}
@@ -242,13 +243,14 @@ index.html
 </head>
 
 <body onkeypress="keyPress(event)">
+	<div id="#top"></div>
 	<div class="wrapper">
  	<div class="hero-unit">
 	    	<h1>
 	       		Bidding Tic-Tac-Toe
 	    	</h1>
 	    	<p id="intro">
-	    		A new spin on a classic game. Read the <a href="rules">rules</a>. Thank you for being our 0-th player!
+	    		A new spin on a classic game. Read the <a href="#codeword" class="smoothScroll">rules</A>. Thank you for being our 0th player!
 	  		</p>
 	</div>
 
@@ -318,9 +320,22 @@ index.html
 				<p id="computer-bid-display" style="font-size:100px; color:#003366"></p>
 			</center>
 		</div>
+	
 	</div>
 	<div class="push"></div>
 	</div>
+
+	<div class="space1"></div><div class="space1"></div><div class="space1"></div>
+	<p class="rules-header"> Rules<div id="codeword"></div> </p>
+	<div class="space1"></div><div class="space1"></div><div class="space1"></div>
+	<p class="rulesp"> <b>How To Play:</b> Each turn place a bid by typing some number from 0 to however many chips you have. The computer also makes a bid (without knowledge of yours). You pay the computer your bid and the computer pays you its bid. The player who bids more get to make a move. Rinse and repeat.</p>
+	<div class="space1"></div>
+	<p class="rulesp"> <b>Tied Bids:</b> Occassionally the player and the computer submit the same bid. In this case, whoever has the most chips wins the move. If the player and the computer have the same number of chips, the tie goes to the player.</p>
+	<div class="space1"></div>
+	<p class="rulesp"> Now <a href="#top" class="smoothscroll">Play</a>! </p>
+	<div class="space2"></div>
+	<div class="space2"></div>
+	<div class="space1"></div>
 
 	<footer class="credit">
 		

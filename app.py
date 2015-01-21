@@ -3,19 +3,17 @@ import os
 import random
 import ttt
 
+count = 0
+
 class index(object):
 	@cherrypy.expose
 	def index(self):
 		return open("index.html").read()
 
 	@cherrypy.expose
-	def rules(self):
-		return open("rules.html").read()
-
-	@cherrypy.expose
 	def count(self):
-		count = int(open("count").read())+1
-		open("count","w").write(str(count))
+		global count
+		count += 1
 		if count%10 == 1:
 			return str(count)+'st'
 		elif count%10 == 2:
@@ -88,6 +86,10 @@ if __name__ == '__main__':
          '/css': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'css'
+         },
+         '/js': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': 'js'
          },
          '/computeBid':{
          	'request.dispatch': cherrypy.dispatch.MethodDispatcher(),

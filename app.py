@@ -2,8 +2,8 @@ import cherrypy
 import os
 import random
 import ttt
-
-count = 0
+from urlparse import urlsplit
+from pymongo import Connection
 
 class index(object):
 	@cherrypy.expose
@@ -12,8 +12,29 @@ class index(object):
 
 	@cherrypy.expose
 	def count(self):
-		global count
+		url = os.getenv('MONGOLAB_URI', 'mongodb://heroku_app29441400:mk86bh98h1ms1f93e41kvq8hub@ds031741.mongolab.com:31741/heroku_app29441400')
+		parsed = urlsplit(url)
+		db_name = parsed.path[1:]
+
+		# Get your DB
+		db = Connection(url)[db_name]
+
+		# Authenticate
+		if '@' in url:
+			user, password = parsed.netloc.split('@')[0].split(':')
+			db.authenticate(user, password)
+
+		count_dict = db.Counters.find_one('visitors')
+		if not count_dict:
+			count = 0
+			db.Counters.insert({'_id':'visitors','count':count})
+		else:
+			count = count_dict['count']
 		count += 1
+		# insert updated count into database
+		db.Counters.save({'_id':'visitors','count':count})
+
+
 		if count%10 == 1:
 			return str(count)+'st'
 		elif count%10 == 2:

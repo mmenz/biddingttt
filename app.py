@@ -64,6 +64,8 @@ class computerBidder(object):
 			response = min(p1,p2)
 		elif ttt.tieGameQ(pos): 				# game will end tie = random bids
 			response = random.randint(0, p1)
+		elif ttt.winningSquareQ(pos) >= 0 and p1 > p2:  # one move away from winning
+			response = min(p1,p2)
 		else:									# OTHER CASES = TO DO
 			strat = ttt.getStrategy(pos, p1, p2)
 			r = random.random()
@@ -111,6 +113,10 @@ if __name__ == '__main__':
          '/js': {
             'tools.staticdir.on': True,
             'tools.staticdir.dir': 'js'
+         },
+         '/img': {
+            'tools.staticdir.on': True,
+            'tools.staticdir.dir': 'img'
          },
          '/computeBid':{
          	'request.dispatch': cherrypy.dispatch.MethodDispatcher(),
